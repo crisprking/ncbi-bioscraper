@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# Research outputs (data files — not committed)
+*.csv
+*.xlsx
+*.json
+*.parquet
+*.bib
+*.ris
+*.zip
+*.fasta
+*.png
+*.html
+*.sqlite
+
+# Secrets
+.env
+secrets.txt
+*.pem
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
