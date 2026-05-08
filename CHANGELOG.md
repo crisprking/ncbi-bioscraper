@@ -1,32 +1,40 @@
 # Changelog
 
-## [2.0.0] - 2026
+All notable changes to this project will be documented in this file.
 
-### Added
-- Citation enrichment via OpenAlex (cited_by_count, FWCI, reference list, concepts, retraction flag)
-- Open Access detection via Unpaywall (free PDF URL, OA status, license, version)
-- Study type classifier: RCT, systematic review, meta-analysis, cohort, in-vitro, case report, preprint
-- Drug / disease / gene entity extraction from MeSH (no GPU required)
-- Semantic deduplication with RapidFuzz (token_set_ratio >= 92%)
-- Trend analysis: emerging vs fading keyword terms year-over-year
-- PRISMA-style flow diagram
-- Resumable runs via SQLite checkpoint cache
-- RIS export (Zotero / EndNote)
-- Parquet export (pandas, DuckDB, Polars)
-- Self-contained HTML report with all charts base64-embedded
-- Interactive PyVis co-author network
-- MeSH concept co-occurrence network
+## [3.5.1] — 2026-05-08
 
 ### Fixed
-- Year parsing bug (was returning '20' instead of the full 4-digit year)
-- DOI extraction strips [pii] artifacts from LID/AID fields
-- ISSN cleanup removes (Electronic)/(Linking) annotation tags
-
-## [1.0.0] - PREV_2026
+- **Crash on empty PDF extraction.** `int(NaN)` was being called when zero PDFs yielded text (because every download hit a silent failure). Now guarded by `if n_extracted > 0`.
+- **Silent PDF download failures.** PDF extraction was completing in suspicious ~80ms per file, indicating downloads were bailing before any bytes were transferred. Two fixes:
+  - Route PDF downloads through the same retry-enabled `requests.Session` used by the resolver chain. Connection pooling + automatic retries on 429/5xx are essential — PMC's HTTPS endpoint rate-limits aggressive fetchers.
+  - Accept `application/octet-stream` content-type (PMC's FTP-over-HTTPS endpoint sometimes returns this) in addition to `application/pdf`.
+  - Added 150ms politeness delay between PDF requests.
 
 ### Added
-- Initial release: PubMed, Gene, Nucleotide, GEO, SRA scrapers
-- TF-IDF keywords, LDA topic modeling, word cloud
-- Co-author network graph
-- CSV, Excel, JSON, BibTeX export
-- Google Drive auto-save
+- **Diagnostic counters in PDF extraction.** Every download outcome is now categorized (`http_403`, `not_pdf_content_type`, `too_large`, `pdf_parse_error`, `timeout`, `ok`, etc.). When zero PDFs extract, the breakdown prints automatically with troubleshooting tips. No more black-box failures.
+
+### Notes
+- A real `NCBI_EMAIL` lifts full-text yield significantly. Unpaywall and CrossRef are auto-skipped on placeholder emails — without them, you're relying on PMC + Europe PMC + OA Button + preprint sources, which top out around 60-65% on broad PubMed sets. With Unpaywall enabled, expect 75-80%.
+
+## [3.5.0] — 2026-05-07
+
+### Changed (vs the v3.5.2 MAX file that this consolidates)
+- Single, definitive notebook. The previous file contained ~8 stacked rewrites of Cell 7 (v3, v3.1, v3.3, v3.4, v3.5.2 MAX), totaling 32,308 lines. The consolidated version is 1,708 code lines.
+- OA waterfall expanded to 7 providers in priority order: PMC → Europe PMC → Unpaywall → CrossRef → OA Button → bioRxiv direct → bioRxiv title-search.
+- Europe PMC moved to position 2 (was lower) — it returns full-text URLs directly, better for downstream PDF extraction than landing-page redirects.
+- Email validation auto-skips Unpaywall and CrossRef on placeholder emails (no more 50 consecutive 422s).
+- Dashboard panel #6 now shows OA-source breakdown (which provider resolved each record) instead of a generic `is_oa` pie.
+- Removed embedded GitHub-publish cells (better as a separate operation, not in a research notebook).
+
+### Preserved from v2.0
+- 4-digit year parsing
+- DOI cleanup (strips `[pii]` artifacts)
+- ISSN cleanup (strips `(Electronic)`/`(Linking)` tags)
+- All export formats (CSV, XLSX, JSON, Parquet, BibTeX, RIS)
+- SQLite cache for resumable runs
+- PRISMA flow diagram, PyVis networks, self-contained HTML report
+
+## [2.0.0] — 2026-05-07
+
+Initial public release.

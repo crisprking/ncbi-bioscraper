@@ -1,34 +1,46 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
 *.egg-info/
-dist/
-build/
 
-# Jupyter
+# Notebook checkpoints
 .ipynb_checkpoints/
-*.nbconvert.ipynb
 
-# Research outputs (data files — not committed)
-*.csv
-*.xlsx
-*.json
-*.parquet
-*.bib
-*.ris
-*.zip
-*.fasta
-*.png
-*.html
-*.sqlite
+# BioScraper outputs (run-specific data, not source)
+_cache.sqlite
+*_outputs.zip
+crispr_cancer_*/
+*_pubmed.csv
+*_pubmed.xlsx
+*_pubmed.json
+*_pubmed.parquet
+*_pubmed.bibtex
+*_pubmed.ris
+*_dashboard.png
+*_wordcloud.png
+*_prisma.png
+*_REPORT.html
+*_coauthor_network.html
+*_concept_network.html
+*_keywords.csv
+*_topics.csv
+*_trends.txt
+*_genes.csv
+*_nucleotide.csv
 
-# Secrets
+# Secrets — never commit
 .env
-secrets.txt
 *.pem
+secrets.json
 
-# OS / editors
+# OS
 .DS_Store
 Thumbs.db
+
+# Editor
 .vscode/
 .idea/
+*.swp
