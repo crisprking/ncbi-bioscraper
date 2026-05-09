@@ -1,5 +1,21 @@
 # Changelog
 
+## v3.5.9 — 2026-05-09
+- Publish cell hardened: actual notebook auto-detection (the previous
+  release defined `_find_or_build_notebook` but never called it,
+  causing `Path(None)` TypeError).
+- Token now flows through a per-process credential helper instead
+  of being embedded in the clone URL.
+- All git invocations now check return codes and redact tokens
+  (including PAT-shaped strings) from any error output.
+- No global `os.chdir`; working directory is restored on exit.
+
+## v3.5.8 — 2026-05-09
+- Canonical metrics block: `df.attrs['coverage_metrics']` exposes
+  `any_oa_link_pct`, `full_text_url_pct`, `extracted_text_pct`,
+  `total_extracted_chars` for programmatic use.
+- Honest README: numbers come from actual runs, not aspirational targets.
+
 All notable changes to this project will be documented in this file.
 
 ## [3.5.1] — 2026-05-08

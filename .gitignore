@@ -1,46 +1,33 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
 *.egg-info/
-
-# Notebook checkpoints
+.venv/
+venv/
 .ipynb_checkpoints/
 
-# BioScraper outputs (run-specific data, not source)
+# Notebook scratch
+/content/_repo_publish_workspace/
+/content/output/
+/content/_cache.sqlite
+*.sqlite
+*.sqlite-journal
+
+# Data artifacts produced by the notebook
+*.parquet
+*.csv
+*.xlsx
+*.bib
+*.ris
 _cache.sqlite
-*_outputs.zip
-crispr_cancer_*/
-*_pubmed.csv
-*_pubmed.xlsx
-*_pubmed.json
-*_pubmed.parquet
-*_pubmed.bibtex
-*_pubmed.ris
-*_dashboard.png
-*_wordcloud.png
-*_prisma.png
-*_REPORT.html
-*_coauthor_network.html
-*_concept_network.html
-*_keywords.csv
-*_topics.csv
-*_trends.txt
-*_genes.csv
-*_nucleotide.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
 # Secrets — never commit
 .env
 *.pem
-secrets.json
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-*.swp
+*token*
